@@ -7,7 +7,7 @@ export default function ListItem(props) {
             <td>{props.date}</td>
             <td>{props.dist}</td>
             <td className='flex-row'>
-                <div className='delete' onClick={props.funcDel}>✘</div>
+                <div id={props.date} className='delete' onClick={props.funcDel}>✘</div>
                 <div className='edit'>✎</div>
             </td>
         </tr>

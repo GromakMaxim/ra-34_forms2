@@ -12,12 +12,10 @@ export default class Widget extends Component {
                 {
                     date: '01.02.2012',
                     dist: '5.7',
-                    id: 1
                 },
                 {
                     date: '02.02.2012',
                     dist: '5.3',
-                    id: 2
                 },
 
             ]
@@ -29,8 +27,14 @@ export default class Widget extends Component {
         this.deleteListItem = this.deleteListItem.bind(this);
     }
 
-    deleteListItem(){
-        console.log('deleted!')
+    deleteListItem(e){
+        let idTarget = e.target.id;
+        let newArr = this.state.tasks.filter(item => item.date !== idTarget);
+
+        this.setState({
+            tasks: newArr
+        })
+        console.log((idTarget))
     }
 
     handleSubmit(event) {
@@ -38,7 +42,6 @@ export default class Widget extends Component {
         let obj = {
             date: this.state.currentDate,
             dist: this.state.currentDistance,
-            id: this.state.tasks.length + 1,
         };
 
         let arr = this.state.tasks;
