@@ -11,11 +11,11 @@ export default class Widget extends Component {
             tasks: [
                 {
                     date: '01.02.2012',
-                    dist: '5.7',
+                    dist: 5.7,
                 },
                 {
                     date: '02.02.2012',
-                    dist: '5.3',
+                    dist: 5.3,
                 },
 
             ]
@@ -27,7 +27,7 @@ export default class Widget extends Component {
         this.deleteListItem = this.deleteListItem.bind(this);
     }
 
-    deleteListItem(e){
+    deleteListItem(e) {
         let idTarget = e.target.id;
         let newArr = this.state.tasks.filter(item => item.date !== idTarget);
 
@@ -39,31 +39,43 @@ export default class Widget extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        let obj = {
-            date: this.state.currentDate,
-            dist: this.state.currentDistance,
-        };
 
-        let arr = this.state.tasks;
-        arr.push(obj);
+        // ищем пред. значение
+        let found = this.state.tasks.filter(item => item.date === this.state.currentDate)[0];
 
+        let resultObj;
+        let arr;
+        if (found !== null && found !== undefined) {
+            found.dist += parseInt(this.state.currentDistance); // складываем дистанции
+
+            resultObj = {
+                date: this.state.currentDate,
+                dist: found.dist,
+            };
+
+            arr = this.state.tasks.filter(item => item.date !== this.state.currentDate);
+            arr.push(resultObj);
+        } else {
+            resultObj = {
+                date: this.state.currentDate,
+                dist: parseInt(this.state.currentDistance),
+            };
+            arr = this.state.tasks;
+            arr.push(resultObj);
+        }
 
         this.setState({
-            currentDate: '',
-            currentDistance: 0,
             tasks: arr,
         })
     }
 
     handleChangeDate(event) {
-        console.log('date: ' + event.target.value)
         this.setState({
             currentDate: event.target.value,
         })
     }
 
     handleChangeDist(event) {
-        console.log('dist: ' + event.target.value)
         this.setState({
             currentDistance: event.target.value,
         })
