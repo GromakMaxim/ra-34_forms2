@@ -73,3 +73,7 @@ table{
 .delete{
     margin-right: 20px;
 }
+
+.delete, .edit{
+    cursor: pointer;
+}

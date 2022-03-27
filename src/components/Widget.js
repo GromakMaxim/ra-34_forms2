@@ -26,6 +26,11 @@ export default class Widget extends Component {
         this.handleChangeDate = this.handleChangeDate.bind(this);
         this.handleChangeDist = this.handleChangeDist.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.deleteListItem = this.deleteListItem.bind(this);
+    }
+
+    deleteListItem(){
+        console.log('deleted!')
     }
 
     handleSubmit(event) {
@@ -81,7 +86,7 @@ export default class Widget extends Component {
 
                 </div>
 
-                <ActivityList data={this.state.tasks}/>
+                <ActivityList data={this.state.tasks} funcDel={this.deleteListItem}/>
             </form>
         );
     }

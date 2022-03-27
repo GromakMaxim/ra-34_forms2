@@ -6,7 +6,7 @@ export default function ActivityList(props) {
     function renderTasks() {
         let arr = [];
         props.data.forEach(item => {
-            arr.push(<ListItem key={item.id} date={item.date} dist={item.dist}/>)
+            arr.push(<ListItem key={item.id} date={item.date} dist={item.dist} funcDel={props.funcDel}/>)
         })
         return arr;
     }
