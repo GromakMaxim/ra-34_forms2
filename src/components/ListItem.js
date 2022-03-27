@@ -2,13 +2,13 @@ import React from "react";
 
 export default function ListItem(props) {
     return (
-        <div className='listItem flex-row'>
-            <div className='date'>{props.date}</div>
-            <div className='distance'>{props.dist}</div>
-            <div className='controls flex-row'>
-                <div className='controls-edit'>✘</div>
-                <div className='controls-delete'>✎</div>
-            </div>
-        </div>
+        <tr>
+            <td>{props.date}</td>
+            <td>{props.dist}</td>
+            <td className='flex-row'>
+                <div className='delete'>✘</div>
+                <div className='edit'>✎</div>
+            </td>
+        </tr>
     )
 }

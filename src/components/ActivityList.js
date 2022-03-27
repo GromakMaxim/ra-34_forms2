@@ -12,15 +12,17 @@ export default function ActivityList(props) {
     }
 
     return (
-        <div>
-            <div className='list-headers flex-row'>
-                <div className='list-headers-date'>Дата (ДД.ММ.ГГ)</div>
-                <div className='list-headers-dist'>Пройдено км</div>
-                <div className='list-headers-controls'>Действия</div>
-            </div>
-            <div className='list flex-col'>
+        <table align='left'>
+            <thead>
+                <tr>
+                    <th>Дата (ДД.ММ.ГГ)</th>
+                    <th>Пройдено км</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
                 {renderTasks()}
-            </div>
-        </div>
+            </tbody>
+        </table>
     );
 }

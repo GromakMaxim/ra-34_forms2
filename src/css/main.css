@@ -64,3 +64,12 @@
     padding: 10px 20px;
     cursor: pointer;
 }
+
+table{
+    margin-left: 20px;
+
+}
+
+.delete{
+    margin-right: 20px;
+}
