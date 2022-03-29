@@ -13,25 +13,6 @@
     margin-right: 10px;
 }
 
-.list {
-    width: 100%;
-    border: 1px solid black;
-    border-radius: 20px;
-    padding: 20px;
-}
-
-.list-headers {
-    margin-bottom: 10px;
-}
-
-
-.date {
-    margin-right: 90px;
-}
-
-.controls {
-    margin-left: 90px;
-}
 
 .controls-edit {
     margin-right: 10px;
@@ -45,19 +26,6 @@
 .flex-col {
     display: flex;
     flex-direction: column;
-}
-
-.list-headers-date {
-    margin-right: 30px;
-    margin-left: 20px;
-}
-
-.list-headers-dist {
-    margin-right: 20px;
-}
-
-.controls-edit, .controls-delete {
-    cursor: pointer;
 }
 
 .ok-btn {
