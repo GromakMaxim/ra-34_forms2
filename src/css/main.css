@@ -20,7 +20,7 @@
     padding: 20px;
 }
 
-.list-headers{
+.list-headers {
     margin-bottom: 10px;
 }
 
@@ -65,15 +65,15 @@
     cursor: pointer;
 }
 
-table{
+table {
     margin-left: 20px;
 
 }
 
-.delete{
+.delete {
     margin-right: 20px;
 }
 
-.delete, .edit{
+.delete, .edit {
     cursor: pointer;
 }

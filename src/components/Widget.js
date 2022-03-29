@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import ActivityList from "./ActivityList";
+import {format} from "date-fns";
 
 export default class Widget extends Component {
 
@@ -10,11 +11,11 @@ export default class Widget extends Component {
             currentDistance: 0,
             tasks: [
                 {
-                    date: '01.02.2012',
+                    date: new Date(2022, 1, 3),
                     dist: 5.7,
                 },
                 {
-                    date: '02.02.2012',
+                    date: new Date(2022, 2, 2),
                     dist: 5.3,
                 },
 
@@ -27,46 +28,58 @@ export default class Widget extends Component {
         this.deleteListItem = this.deleteListItem.bind(this);
     }
 
-    deleteListItem(e) {
+    async deleteListItem(e) {
         let idTarget = e.target.id;
-        let newArr = this.state.tasks.filter(item => item.date !== idTarget);
+        let newArr = this.state.tasks.filter(item => format(item.date, 'dd.MM.yyyy') !== idTarget);
 
         this.setState({
             tasks: newArr
         })
-        console.log((idTarget))
     }
 
-    handleSubmit(event) {
+    async handleSubmit(event) {
         event.preventDefault();
 
-        // ищем пред. значение
-        let found = this.state.tasks.filter(item => item.date === this.state.currentDate)[0];
+        let dateObj = await rawInputToDataObject(this.state.currentDate);
 
-        let resultObj;
-        let arr;
-        if (found !== null && found !== undefined) {
-            found.dist += parseInt(this.state.currentDistance); // складываем дистанции
+        if (dateObj !== null) {
+            let possibleDistance = parseFloat(this.state.currentDistance);
 
-            resultObj = {
-                date: this.state.currentDate,
-                dist: found.dist,
-            };
+            if (!isNaN(possibleDistance) && possibleDistance >= 0) {
 
-            arr = this.state.tasks.filter(item => item.date !== this.state.currentDate);
-            arr.push(resultObj);
-        } else {
-            resultObj = {
-                date: this.state.currentDate,
-                dist: parseInt(this.state.currentDistance),
-            };
-            arr = this.state.tasks;
-            arr.push(resultObj);
+                // ищем пред. значение
+                let found = this.state.tasks.filter(item => format(item.date, 'dd.MM.yyyy') === this.state.currentDate)[0];
+
+                let resultObj;
+                let arr;
+                if (found !== null && found !== undefined) {
+                    found.dist += parseFloat(this.state.currentDistance); // складываем дистанции
+
+                    resultObj = {
+                        date: dateObj,
+                        dist: found.dist,
+                    };
+
+                    arr = this.state.tasks.filter(item => format(item.date, 'dd.MM.yyyy') !== this.state.currentDate);
+                    arr.push(resultObj);
+                } else {
+                    resultObj = {
+                        date: dateObj,
+                        dist: parseFloat(this.state.currentDistance),
+                    };
+                    arr = this.state.tasks;
+                    arr.push(resultObj);
+                }
+
+                let sortedArr = arr.slice().sort((a, b) => b.date - a.date);
+
+                this.setState({
+                    tasks: sortedArr,
+                })
+            }
         }
 
-        this.setState({
-            tasks: arr,
-        })
+
     }
 
     handleChangeDate(event) {
@@ -105,4 +118,31 @@ export default class Widget extends Component {
             </form>
         );
     }
+}
+
+async function rawInputToDataObject(rawDate) {
+    let result = await parseDate(rawDate);
+    if (result === null || result === undefined) return null;
+
+    let d = result.split(".")[0];
+    let m = result.split(".")[1];
+    let y = result.split(".")[2];
+
+    return new Date(y, m - 1, d);
+}
+
+async function parseDate(str) {
+    let regex1 = /^(0[1-9]|1\d|2\d|3[01])\.(0[1-9]|1[0-2])\.(19|20)\d{2}$/; // dd.mm.yyyy
+    let regex2 = /^(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d{2}$/; // dd/mm/yyyy
+    let regex3 = /^(0[1-9]|1\d|2\d|3[01])\-(0[1-9]|1[0-2])\-(19|20)\d{2}$/; // dd-mm-yyyy
+
+    if (regex1.test(str)) return str;
+    else if (regex2.test(str)) {
+        str = str.replaceAll("/", ".");
+        return str
+    } else if (regex3.test(str)) {
+        str = str.replaceAll("-", ".");
+        return str
+    }
+    return null;
 }
