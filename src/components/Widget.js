@@ -41,14 +41,12 @@ export default class Widget extends Component {
         event.preventDefault();
 
         let dateObj = await rawInputToDataObject(this.state.currentDate);
-
         if (dateObj !== null) {
             let possibleDistance = parseFloat(this.state.currentDistance);
 
             if (!isNaN(possibleDistance) && possibleDistance >= 0) {
-
                 // ищем пред. значение
-                let found = this.state.tasks.filter(item => format(item.date, 'dd.MM.yyyy') === this.state.currentDate)[0];
+                let found = this.state.tasks.filter(item => format(item.date, 'yyyy-MM-dd') === this.state.currentDate)[0];
 
                 let resultObj;
                 let arr;
@@ -60,7 +58,7 @@ export default class Widget extends Component {
                         dist: found.dist,
                     };
 
-                    arr = this.state.tasks.filter(item => format(item.date, 'dd.MM.yyyy') !== this.state.currentDate);
+                    arr = this.state.tasks.filter(item => format(item.date, 'yyyy-MM-dd') !== this.state.currentDate);
                     arr.push(resultObj);
                 } else {
                     resultObj = {
@@ -83,6 +81,7 @@ export default class Widget extends Component {
     }
 
     handleChangeDate(event) {
+        console.log(event.target.value);
         this.setState({
             currentDate: event.target.value,
         })
@@ -100,7 +99,7 @@ export default class Widget extends Component {
                 <div className='form-controls flex-row'>
                     <div className='form-controls-col flex-col'>
                         <div>Дата (ДД.ММ.ГГ)</div>
-                        <input type='text' onChange={this.handleChangeDate}/>
+                        <input type='date' onChange={this.handleChangeDate}/>
                     </div>
 
                     <div className='form-controls-col flex-col'>
@@ -121,28 +120,10 @@ export default class Widget extends Component {
 }
 
 async function rawInputToDataObject(rawDate) {
-    let result = await parseDate(rawDate);
-    if (result === null || result === undefined) return null;
+    if (rawDate.length !== 10) return null;
+    let d = rawDate.split("-")[2];
+    let m = rawDate.split("-")[1];
+    let y = rawDate.split("-")[0];
 
-    let d = result.split(".")[0];
-    let m = result.split(".")[1];
-    let y = result.split(".")[2];
-
-    return new Date(y, m - 1, d);
-}
-
-async function parseDate(str) {
-    let regex1 = /^(0[1-9]|1\d|2\d|3[01])\.(0[1-9]|1[0-2])\.(19|20)\d{2}$/; // dd.mm.yyyy
-    let regex2 = /^(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d{2}$/; // dd/mm/yyyy
-    let regex3 = /^(0[1-9]|1\d|2\d|3[01])\-(0[1-9]|1[0-2])\-(19|20)\d{2}$/; // dd-mm-yyyy
-
-    if (regex1.test(str)) return str;
-    else if (regex2.test(str)) {
-        str = str.replaceAll("/", ".");
-        return str
-    } else if (regex3.test(str)) {
-        str = str.replaceAll("-", ".");
-        return str
-    }
-    return null;
+    return new Date(y, m - 1, d)
 }
