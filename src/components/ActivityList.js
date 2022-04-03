@@ -6,7 +6,7 @@ export default function ActivityList(props) {
 
     function renderTasks() {
         let arr = [];
-        let sortedArr = props.data.slice().sort((a, b) => a.date - b.date);
+        let sortedArr = props.data.slice().sort((a, b) => b.date - a.date);
         sortedArr.forEach(item => {
             arr.push(<ListItem key={item.date.getTime()} date={item.date} dist={item.dist} funcDel={props.funcDel}/>)
         })
