@@ -45,3 +45,17 @@ table {
 .delete, .edit {
     cursor: pointer;
 }
+
+.modal-edit {
+    margin: auto;
+    max-width: 500px;
+    padding: 35px;
+}
+
+.modal-controls {
+    margin-top: 20px;
+}
+
+#ok {
+    margin-right: 20px;
+}
